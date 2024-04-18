@@ -1,0 +1,26 @@
+package Analizadores;
+
+import java_cup.runtime.*;
+
+class Parser;
+
+/** Simbolos terminales **/
+terminal mas, menos, pareni, parend, por, division;
+terminal Integer NUMBER;
+
+/** Simbolos no terminales **/
+
+non terminal Integer expr;
+
+precedence left mas, menos;
+precedence left por, division;
+
+start with expr;
+
+expr::= expr:e1 mas expr:e2         {: RESULT = e1+e2; :}
+    |   expr:e1 por expr:e2         {: RESULT = e1*e2; :}
+    |   expr:e1 menos expr:e2       {: RESULT = e1-e2; :}
+    |   expr:e1 division expr:e2    {: RESULT = e1/e2; :}
+    |   pareni expr:e parend        {: RESULT = e;     :}
+    |   NUMBER:n                    {: RESULT = n;     :}
+;
